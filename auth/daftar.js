@@ -21,12 +21,12 @@ const config = {
 daftar.post('/', urlencodedParser, async function (req, res) {
   const response = {}
   try{
-    if(!req.body.email || !req.body.password) throw ({message: "Masukkan email dan password", code: 400})
+    if(!req.body.nama_lengkap || !req.body.email || !req.body.password) throw ({message: "Masukkan nama_lengkap, email, dan password", code: 400})
     if(await exists(req.body.email)) throw ({message: "Email sudah terdaftar", code: 400})
 
     passwordHash({ password: req.body.password, salt: salt }, function (err, pass, salt, hash) {
       if (err) throw err;
-      insert('email, password', `'${req.body.email}', '${hash}'`)
+      insert('nama_lengkap, email, password', `'${req.body.nama_lengkap}', '${req.body.email}', '${hash}'`)
     });
 
     response.message = "Pendaftaran Berhasil"
