@@ -4,7 +4,7 @@ const express = require('express')
 const daftar = express.Router()
 
 const bodyParser = require('body-parser');
-const mysql = require('mysql')
+const mysql = require('mysql2')
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const passwordHash = require('pbkdf2-password')()
 require('dotenv').config();
@@ -30,7 +30,7 @@ daftar.post('/', urlencodedParser, async function (req, res) {
         response.message = "Login Berhasil"
         res.json(response)
       } else {
-        response.message = "Login Gagal"
+        response.message = "Email atau password tidak sesuai"
         res.statusCode = 400
         res.json(response)
       }

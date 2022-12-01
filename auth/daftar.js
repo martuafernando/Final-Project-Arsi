@@ -4,7 +4,7 @@ const express = require('express')
 const daftar = express.Router()
 
 const bodyParser = require('body-parser');
-const mysql = require('mysql')
+const mysql = require('mysql2')
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const passwordHash = require('pbkdf2-password')()
 require('dotenv').config();
@@ -40,7 +40,7 @@ daftar.post('/', urlencodedParser, async function (req, res) {
 });
 
 // Function for select data from database
-function select(attribute, condition) {
+function select(attribute, condition) {6
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(config)
     const sql = `SELECT ${attribute} FROM ${table} WHERE ${condition}`;

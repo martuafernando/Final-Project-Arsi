@@ -5,7 +5,7 @@ const app = module.exports = express();
 
 
 app.get('/', function(req, res) {
-  res.json('message: Hello from root route.')
+  res.json({"message": "Hello From Root"})
 });
 
 app.use('/login', require('./auth/login'))
