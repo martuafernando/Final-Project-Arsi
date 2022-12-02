@@ -85,7 +85,7 @@
   "data" : [
     {
       "kelas": 12,
-      "nama_kelas" : "ruangbelajar SMA/SMK (Semester Genap + Persiapan PAS)",
+      "nama_paket" : "ruangbelajar SMA/SMK (Semester Genap + Persiapan PAS)",
       "deskripsi_paket": [
         "UTBK Center + PELATNAS UTBK",
         "Video belajar premium"
@@ -102,7 +102,7 @@
 
 #### Request
 
-**Endpoint** : GET /paket-pembelajaran
+**Endpoint** : GET /profile
 **Body Request** : -
 **Authorization** : Bearer Token
 
@@ -112,11 +112,9 @@
 {
   "message": "Berhasil",
   "data": {
-    "id": 8,
     "nama_lengkap": "testing",
     "email": "testing@gmail.com",
-    "password": "/xTjds2mTHJLIoe8euY0IBAm44u8fKRJ8u4IeKGXKOMqsA7TIy4Mb9G6PxktheL+glF6x+L0a066v5T2c6idofkpinMWFRH9mCMxNBagmxctwv0iMBF6ZRZ3Eut/Cz47rsPKbAoOkuR4re5RNy5HzRD7GKgkB4oTsOUTT2BiQ/o=",
-    "kelas": 0
+    "kelas": 12
   }
 }
 ```

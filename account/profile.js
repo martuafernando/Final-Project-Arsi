@@ -21,12 +21,18 @@ Profile.get('/', urlencodedParser, async function (req, res) {
   try{
 
     // eslint-disable-next-line no-undef
-    const data = jwt.verify(req.header("authorization").split(" ")[1], process.env.key);
-    if(!await exists(data.user_id)) throw ({message: "Data akun tidak ada", statusCode: 400}) 
+    const token = jwt.verify(req.header("authorization").split(" ")[1], process.env.key);
+    if(!await exists(token.user_id)) throw ({message: "Data akun tidak ada", statusCode: 400}) 
     
     response.message = "Berhasil"
 
-    response.data = (await select("*", `id='${data.user_id}'`))[0]
+    const data = (await select("*", `id='${token.user_id}'`))[0]
+
+    response.data = {
+      nama: data.nama_lengkap,
+      email: data.email,
+      kelas: data.kelas
+    }
 
     res.json(response)
 
