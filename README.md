@@ -81,18 +81,42 @@
 
 ```JSON
 {
-    "message": "Berhasil",
-    "data" : [
-      {
-        "kelas": 12,
-        "nama_kelas" : "ruangbelajar SMA/SMK (Semester Genap + Persiapan PAS)",
-        "deskripsi_paket": [
-          "UTBK Center + PELATNAS UTBK",
-          "Video belajar premium"
-        ],
-        "harga" : 498000,
-        "masa_aktif_hingga" : "25/12/2022"
-      }
-    ]
+  "message": "Berhasil",
+  "data" : [
+    {
+      "kelas": 12,
+      "nama_kelas" : "ruangbelajar SMA/SMK (Semester Genap + Persiapan PAS)",
+      "deskripsi_paket": [
+        "UTBK Center + PELATNAS UTBK",
+        "Video belajar premium"
+      ],
+      "harga" : 498000,
+      "masa_aktif_hingga" : "25/12/2022"
+    }
+  ]
+}
+```
+
+
+### Account
+
+#### Request
+
+**Endpoint** : GET /paket-pembelajaran
+**Body Request** : -
+**Authorization** : Bearer Token
+
+#### Response
+
+```JSON
+{
+  "message": "Berhasil",
+  "data": {
+    "id": 8,
+    "nama_lengkap": "testing",
+    "email": "testing@gmail.com",
+    "password": "/xTjds2mTHJLIoe8euY0IBAm44u8fKRJ8u4IeKGXKOMqsA7TIy4Mb9G6PxktheL+glF6x+L0a066v5T2c6idofkpinMWFRH9mCMxNBagmxctwv0iMBF6ZRZ3Eut/Cz47rsPKbAoOkuR4re5RNy5HzRD7GKgkB4oTsOUTT2BiQ/o=",
+    "kelas": 0
+  }
 }
 ```

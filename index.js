@@ -13,6 +13,8 @@ app.use('/daftar', require('./auth/Daftar'))
 
 app.use('/paket-pembelajaran', require('./produk/paketPembelajaran'))
 
+app.use('/profile', require('./account/profile'))
+
 /* istanbul ignore next */
 if (!module.parent) {
   app.listen(3000)

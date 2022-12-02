@@ -22,8 +22,8 @@ const config = {
 Login.post('/', urlencodedParser, async function (req, res) {
   const response = {}
   try{
-    if(!req.body.email || !req.body.password) throw ({message: "Masukkan email dan password", code: 400})
-    if(!await exists(req.body.email)) throw ({message: "Email tidak terdaftar", code: 400})
+    if(!req.body.email || !req.body.password) throw ({message: "Masukkan email dan password", statusCode: 400})
+    if(!await exists(req.body.email)) throw ({message: "Email tidak terdaftar", statusCode: 400})
 
     passwordHash({ password: req.body.password, salt: salt }, async function (err, pass, salt, hash) {
       try{
@@ -33,6 +33,7 @@ Login.post('/', urlencodedParser, async function (req, res) {
           const token = jwt.sign({
             exp: Math.floor(Date.now() / 1000) + (60 * 60),
             user_id: (await select("id", `email='${req.body.email}'`))[0].id
+          // eslint-disable-next-line no-undef
           }, process.env.key);
           
           response.message = "Login berhasil"
@@ -45,14 +46,14 @@ Login.post('/', urlencodedParser, async function (req, res) {
         }
       }catch(error){
         response.message = error.message || error
-        res.statusCode = error.code || 500
+        res.statusCode = error.statusCode || 500
         res.json(response)
       }
     });
 
   }catch(error){
     response.message = error.message || error
-    res.statusCode = error.code || 500
+    res.statusCode = error.statusCode || 500
     res.json(response)
   }
 });

@@ -21,8 +21,8 @@ const config = {
 Daftar.post('/', urlencodedParser, async function (req, res) {
   const response = {}
   try{
-    if(!req.body.nama_lengkap || !req.body.email || !req.body.password || !req.body.kelas) throw ({message: "Masukkan nama_lengkap, email, password, dan kelas", code: 400})
-    if(await exists(req.body.email)) throw ({message: "Email sudah terdaftar", code: 400})
+    if(!req.body.nama_lengkap || !req.body.email || !req.body.password || !req.body.kelas) throw ({message: "Masukkan nama_lengkap, email, password, dan kelas", statusCode: 400})
+    if(await exists(req.body.email)) throw ({message: "Email sudah terdaftar", statusCode: 400})
 
     passwordHash({ password: req.body.password, salt: salt }, function (err, pass, salt, hash) {
       if (err) throw err;
@@ -34,7 +34,7 @@ Daftar.post('/', urlencodedParser, async function (req, res) {
 
   }catch(error){
     response.message = error.message || error
-    res.statusCode = error.code || 500
+    res.statusCode = error.statusCode || 500
     res.json(response)
   }
 });
