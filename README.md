@@ -62,7 +62,10 @@
 
 ```JSON
 {
-    "message": "Login berhasil"
+  "message": "Login berhasil",
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Njk5NzI5MTgsInVzZXJfaWQiOjgsImlhdCI6MTY2OTk2OTMxOH0.SLaOGHBbeyWqc4RtITwiR9xRnZv9P3LsKukcc6SL3wE"
+  }
 }
 ```
 

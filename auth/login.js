@@ -30,14 +30,13 @@ Login.post('/', urlencodedParser, async function (req, res) {
         if (err) throw err
         if(hash == (await select("password", `email='${req.body.email}'`))[0].password){
           // eslint-disable-next-line no-undef
-          // const token = jwt.sign({ user_id: (await select("id", `email='${req.body.email}'`))[0].id }, process.env.key)
           const token = jwt.sign({
             exp: Math.floor(Date.now() / 1000) + (60 * 60),
             user_id: (await select("id", `email='${req.body.email}'`))[0].id
           }, process.env.key);
           
           response.message = "Login berhasil"
-          response.data = {"token": token };
+          response.data = {"token": token }
           res.json(response)
         } else {
           response.message = "Email atau password tidak sesuai"
