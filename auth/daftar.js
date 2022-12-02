@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const daftar = express.Router()
+const Daftar = express.Router()
 
 const bodyParser = require('body-parser');
 const mysql = require('mysql2')
@@ -9,7 +9,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const passwordHash = require('pbkdf2-password')()
 require('dotenv').config();
 
-const table = "users"
+const table = "user"
 
 // eslint-disable-next-line no-undef
 const salt = process.env.SALT
@@ -18,18 +18,18 @@ const config = {
   host: process.env.dbHost, user: process.env.dbUser, password: process.env.dbPassword, database: process.env.dbDatabase
 }
 
-daftar.post('/', urlencodedParser, async function (req, res) {
+Daftar.post('/', urlencodedParser, async function (req, res) {
   const response = {}
   try{
-    if(!req.body.nama_lengkap || !req.body.email || !req.body.password) throw ({message: "Masukkan nama_lengkap, email, dan password", code: 400})
+    if(!req.body.nama_lengkap || !req.body.email || !req.body.password || !req.body.kelas) throw ({message: "Masukkan nama_lengkap, email, password, dan kelas", code: 400})
     if(await exists(req.body.email)) throw ({message: "Email sudah terdaftar", code: 400})
 
     passwordHash({ password: req.body.password, salt: salt }, function (err, pass, salt, hash) {
       if (err) throw err;
-      insert('nama_lengkap, email, password', `'${req.body.nama_lengkap}', '${req.body.email}', '${hash}'`)
+      insert('nama_lengkap, email, password, kelas', `'${req.body.nama_lengkap}', '${req.body.email}', '${hash}', '${req.body.kelas}'`)
     });
 
-    response.message = "Pendaftaran Berhasil"
+    response.message = "Pendaftaran berhasil"
     res.json(response)
 
   }catch(error){
@@ -40,7 +40,7 @@ daftar.post('/', urlencodedParser, async function (req, res) {
 });
 
 // Function for select data from database
-function select(attribute, condition) {6
+function select(attribute, condition) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(config)
     const sql = `SELECT ${attribute} FROM ${table} WHERE ${condition}`;
@@ -75,4 +75,4 @@ async function exists(email) {
   return (result.length > 0)
 }
 
-module.exports = daftar;
+module.exports = Daftar;

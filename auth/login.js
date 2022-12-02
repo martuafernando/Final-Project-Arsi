@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const daftar = express.Router()
+const Login = express.Router()
 
 const bodyParser = require('body-parser');
 const mysql = require('mysql2')
@@ -9,7 +9,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const passwordHash = require('pbkdf2-password')()
 require('dotenv').config();
 
-const table = "users"
+const table = "user"
 
 // eslint-disable-next-line no-undef
 const salt = process.env.SALT
@@ -18,20 +18,26 @@ const config = {
   host: process.env.dbHost, user: process.env.dbUser, password: process.env.dbPassword, database: process.env.dbDatabase
 }
 
-daftar.post('/', urlencodedParser, async function (req, res) {
+Login.post('/', urlencodedParser, async function (req, res) {
   const response = {}
   try{
     if(!req.body.email || !req.body.password) throw ({message: "Masukkan email dan password", code: 400})
     if(!await exists(req.body.email)) throw ({message: "Email tidak terdaftar", code: 400})
 
     passwordHash({ password: req.body.password, salt: salt }, async function (err, pass, salt, hash) {
-      if (err) throw err
-      if(hash == (await select("password", `email='${req.body.email}'`))[0].password){
-        response.message = "Login Berhasil"
-        res.json(response)
-      } else {
-        response.message = "Email atau password tidak sesuai"
-        res.statusCode = 400
+      try{
+        if (err) throw err
+        if(hash == (await select("password", `email='${req.body.email}'`))[0].password){
+          response.message = "Login berhasil"
+          res.json(response)
+        } else {
+          response.message = "Email atau password tidak sesuai"
+          res.statusCode = 400
+          res.json(response)
+        }
+      }catch(error){
+        response.message = error.message || error
+        res.statusCode = error.code || 500
         res.json(response)
       }
     });
@@ -64,4 +70,4 @@ async function exists(email) {
   return (result.length > 0)
 }
 
-module.exports = daftar;
+module.exports = Login;

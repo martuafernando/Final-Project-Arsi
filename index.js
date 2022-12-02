@@ -8,8 +8,10 @@ app.get('/', function(req, res) {
   res.json({"message": "Hello From Root"})
 });
 
-app.use('/login', require('./auth/login'))
-app.use('/daftar', require('./auth/daftar'))
+app.use('/login', require('./auth/Login'))
+app.use('/daftar', require('./auth/Daftar'))
+
+app.use('/paket-pembelajaran', require('./produk/paketPembelajaran'))
 
 /* istanbul ignore next */
 if (!module.parent) {
