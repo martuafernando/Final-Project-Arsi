@@ -5,6 +5,7 @@ const Login = express.Router()
 
 const bodyParser = require('body-parser');
 const mysql = require('mysql2')
+const jwt = require('jsonwebtoken');
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const passwordHash = require('pbkdf2-password')()
 require('dotenv').config();
@@ -28,7 +29,15 @@ Login.post('/', urlencodedParser, async function (req, res) {
       try{
         if (err) throw err
         if(hash == (await select("password", `email='${req.body.email}'`))[0].password){
+          // eslint-disable-next-line no-undef
+          // const token = jwt.sign({ user_id: (await select("id", `email='${req.body.email}'`))[0].id }, process.env.key)
+          const token = jwt.sign({
+            exp: Math.floor(Date.now() / 1000) + (60 * 60),
+            user_id: (await select("id", `email='${req.body.email}'`))[0].id
+          }, process.env.key);
+          
           response.message = "Login berhasil"
+          response.data = {"token": token };
           res.json(response)
         } else {
           response.message = "Email atau password tidak sesuai"
@@ -50,10 +59,17 @@ Login.post('/', urlencodedParser, async function (req, res) {
 });
 
 // Function for select data from database
-function select(attribute, condition) {
+function select(attribute, condition=null) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(config)
-    const sql = `SELECT ${attribute} FROM ${table} WHERE ${condition}`;
+    
+    let sql;
+
+    if(condition==null){
+      sql = `SELECT ${attribute} FROM ${table}`;
+    }else{
+      sql = `SELECT ${attribute} FROM ${table} WHERE ${condition}`;
+    }
 
     connection.query(sql, (err, result) => {
       if(err) return reject(err);
@@ -63,6 +79,7 @@ function select(attribute, condition) {
     connection.end()
   });
 }
+
 
 // check if the credential already registered
 async function exists(email) {
