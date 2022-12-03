@@ -23,7 +23,10 @@ app.use('/daftar', require('./auth/Daftar'))
 app.use('/paket-pembelajaran', require('./produk/paketPembelajaran'))
 
 app.use('/profile', require('./account/profile'))
-app.use('/paket-saya', require('./account/paket-saya'))
+app.use('/paket-saya', require('./account/paketSaya'))
+
+app.use('/pembelian', require('./transaksi/pembelian'))
+app.use('/riwayat', require('./transaksi/riwayat'))
 
 /* istanbul ignore next */
 if (!module.parent) {

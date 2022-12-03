@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const PaketSaya = express.Router()
+const Riwayat = express.Router()
 
 const bodyParser = require('body-parser')
 const mysql = require('mysql2')
@@ -11,14 +11,14 @@ require('dotenv').config()
 
 const user_table = "user"
 const product_table = "paket_pembelajaran"
-const packet_table = "paket_user"
+const transaction_table = "pembelian"
 
 const config = {
   // eslint-disable-next-line no-undef
   host: process.env.dbHost, user: process.env.dbUser, password: process.env.dbPassword, database: process.env.dbDatabase
 }
 
-PaketSaya.get('/', urlencodedParser, async function (req, res) {
+Riwayat.get('/', urlencodedParser, async function (req, res) {
   const response = {}
   try{
 
@@ -26,17 +26,17 @@ PaketSaya.get('/', urlencodedParser, async function (req, res) {
     const token = jwt.verify(req.header("authorization").split(" ")[1], process.env.key)
     if(!await exists(token.user_id)) throw ({message: "Data akun tidak ada", statusCode: 400}) 
     
-    const packets = await getPacketfromUser(8)
+    const histories = await getDataPaket(token.user_id)
     
     response.message = "Berhasil"
     response.data = []
 
-    for (const packet of packets) {
+    for (const history of histories) {
       response.data.push({
-        id_paket : packet.id,
-        nama_paket : packet.nama,
-        harga_paket : packet.harga,
-        status : new Date() < new Date(packet.kadaluarsa*1000) ? "Aktif" : "Nonaktif"
+        id_riwayat: history.id,
+        nama_paket : history.nama,
+        harga_pembelian : history.total_pembelian,
+        status : history.status ? "Sudah Dibayar" : "Belum Dibayar"
       })
     }
 
@@ -51,11 +51,11 @@ PaketSaya.get('/', urlencodedParser, async function (req, res) {
 })
 
 // Function for select data from database
-function getPacketfromUser(user_id) {
+function getDataPaket(user_id) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(config)
 
-    const sql = `SELECT * FROM ${packet_table} INNER JOIN ${product_table} ON ${packet_table}.id_paket = ${product_table}.id WHERE ${packet_table}.id_user='${user_id}'`
+    const sql = `SELECT nama, total_pembelian, status, pembelian.id AS id FROM ${transaction_table} LEFT JOIN ${product_table} ON ${transaction_table}.id_paket = ${product_table}.id WHERE ${transaction_table}.id_user='${user_id}'`
 
     connection.query(sql, (err, result) => {
       if(err) return reject(err)
@@ -95,4 +95,4 @@ async function exists(id) {
   return (result.length > 0)
 }
 
-module.exports = PaketSaya
+module.exports = Riwayat

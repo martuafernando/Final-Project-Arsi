@@ -22,11 +22,12 @@ PaketPembelajaran.get('/', async function (req, res) {
     for (const result of results) {
       const d = new Date(result.kadaluarsa*1000)
       response.data.push({
-        "kelas" : result.kelas,
-        "nama_paket" : result.nama,
-        "deskripsi_paket" : result.deskripsi.split("|"),
-        "harga" : result.harga,
-        "masa_aktif_hingga" : `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`
+        id_paket: result.id,
+        kelas : result.kelas,
+        nama_paket : result.nama,
+        deskripsi_paket : result.deskripsi.split("|"),
+        harga : result.harga,
+        masa_aktif_hingga : `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`
       }) 
     }
     
