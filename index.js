@@ -27,6 +27,7 @@ app.use('/paket-saya', require('./account/paketSaya'))
 
 app.use('/pembelian', require('./transaksi/pembelian'))
 app.use('/riwayat', require('./transaksi/riwayat'))
+app.use('/riwayat', require('./transaksi/detailRiwayat'))
 
 /* istanbul ignore next */
 if (!module.parent) {
