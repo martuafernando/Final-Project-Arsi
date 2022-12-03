@@ -3,12 +3,12 @@
 const express = require('express')
 const Login = express.Router()
 
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser')
 const mysql = require('mysql2')
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const passwordHash = require('pbkdf2-password')()
-require('dotenv').config();
+require('dotenv').config()
 
 const table = "user"
 
@@ -34,7 +34,7 @@ Login.post('/', urlencodedParser, async function (req, res) {
             exp: Math.floor(Date.now() / 1000) + (60 * 60),
             user_id: (await select("id", `email='${req.body.email}'`))[0].id
           // eslint-disable-next-line no-undef
-          }, process.env.key);
+          }, process.env.key)
           
           response.message = "Login berhasil"
           response.data = {"token": token }
@@ -49,35 +49,35 @@ Login.post('/', urlencodedParser, async function (req, res) {
         res.statusCode = error.statusCode || 500
         res.json(response)
       }
-    });
+    })
 
   }catch(error){
     response.message = error.message || error
     res.statusCode = error.statusCode || 500
     res.json(response)
   }
-});
+})
 
 // Function for select data from database
 function select(attribute, condition=null) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(config)
     
-    let sql;
+    let sql
 
     if(condition==null){
-      sql = `SELECT ${attribute} FROM ${table}`;
+      sql = `SELECT ${attribute} FROM ${table}`
     }else{
-      sql = `SELECT ${attribute} FROM ${table} WHERE ${condition}`;
+      sql = `SELECT ${attribute} FROM ${table} WHERE ${condition}`
     }
 
     connection.query(sql, (err, result) => {
-      if(err) return reject(err);
-      resolve(result);
-    });
+      if(err) return reject(err)
+      resolve(result)
+    })
 
     connection.end()
-  });
+  })
 }
 
 
@@ -87,4 +87,4 @@ async function exists(email) {
   return (result.length > 0)
 }
 
-module.exports = Login;
+module.exports = Login

@@ -22,9 +22,9 @@
 
 #### Request
 
-**Endpoint** : POST /daftar
-**Body Request** : nama_lengkap, email, password, kelas
-**Authorization** : -
+- **Endpoint** : POST /daftar
+- **Body Request** : nama_lengkap, email, password, kelas
+- **Authorization** : -
 
 ```JSON
 {
@@ -47,9 +47,10 @@
 
 #### Request
 
-**Endpoint** : POST /login
-**Body Request** : email, password
-**Authorization** : -
+- **Content-Type** : application/x-www-form-urlencoded
+- **Endpoint** : POST /login
+- **Body Request** : email, password
+- **Authorization** : -
 
 ```JSON
 {
@@ -73,9 +74,9 @@
 
 #### Request
 
-**Endpoint** : GET /paket-pembelajaran
-**Body Request** : -
-**Authorization** : -
+- **Endpoint** : GET /paket-pembelajaran
+- **Body Request** : -
+- **Authorization** : -
 
 #### Response
 
@@ -101,11 +102,9 @@
 
 #### Request
 
-**Endpoint** : GET /profile
-
-**Body Request** : -
-
-**Authorization** : Bearer Token
+- **Endpoint** : GET /profile
+- **Body Request** : -
+- **Authorization** : Bearer Token
 
 #### Response
 
@@ -117,5 +116,35 @@
     "email": "testing@gmail.com",
     "kelas": 12
   }
+}
+```
+
+### Account Packet
+
+#### Request
+
+- **Endpoint** : GET /paket-saya
+- **Body Request** : -
+- **Authorization** : Bearer Token
+
+#### Response
+
+```JSON
+{
+  "message": "Berhasil",
+  "data": [
+    {
+      "id_paket": 1,
+      "nama_paket": "ruangbelajar SMA/SMK (Semester Genap + Persiapan PAS)",
+      "harga_paket": 498000,
+      "status": "Nonaktif"
+    },
+    {
+      "id_paket": 3,
+      "nama_paket": "ruangbelajar SMA/SMK + Roboguru Plus Premium (Semester Genap + Persiapan PAS)",
+      "harga_paket": 799000,
+      "status": "Aktif"
+    }
+  ]
 }
 ```
