@@ -16,7 +16,8 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.20",
-    "pbkdf2-password": "^1.2.1"
+    "pbkdf2-password": "^1.2.1",
+    "showdown": "^2.1.0"
   },
   "devDependencies": {
     "eslint": "^8.28.0"

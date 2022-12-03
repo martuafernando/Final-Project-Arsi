@@ -97,13 +97,14 @@
 }
 ```
 
-
 ### Account
 
 #### Request
 
 **Endpoint** : GET /profile
+
 **Body Request** : -
+
 **Authorization** : Bearer Token
 
 #### Response

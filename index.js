@@ -3,9 +3,18 @@
 const express = require('express')
 const app = module.exports = express();
 
+const showdown  = require('showdown')
+const converter = new showdown.Converter()
+
+const fs = require('fs')
+
 
 app.get('/', function(req, res) {
-  res.json({"message": "Hello From Root"})
+  // res.json({"message": "Hello From Root"})
+  fs.readFile('./README.md', 'utf8', (err, data) => {
+    const html = converter.makeHtml(data)
+    res.send(html);
+  });
 });
 
 app.use('/login', require('./auth/Login'))
