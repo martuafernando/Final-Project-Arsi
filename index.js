@@ -29,6 +29,8 @@ app.use('/pembelian', require('./transaksi/pembelian'))
 app.use('/riwayat', require('./transaksi/riwayat'))
 app.use('/riwayat', require('./transaksi/detailRiwayat'))
 
+app.use('/checkout', require('./transaksi/checkout'))
+
 /* istanbul ignore next */
 if (!module.parent) {
   app.listen(3000)
