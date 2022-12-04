@@ -18,7 +18,7 @@
 
 ## Daftar API
 
-### Registrasi
+### Daftar
 
 #### Request
 
@@ -98,7 +98,7 @@
 }
 ```
 
-### Account
+### Profile
 
 #### Request
 
@@ -119,7 +119,7 @@
 }
 ```
 
-### Account Packet
+### Paket Saya
 
 #### Request
 
@@ -146,5 +146,99 @@
       "status": "Aktif"
     }
   ]
+}
+```
+
+### Pembelian
+
+#### Request
+
+- **Endpoint** : GET /paket-saya
+- **Body Request** : -
+- **Authorization** : Bearer Token
+
+#### Response
+
+```JSON
+{
+  "message": "Berhasil",
+  "data": [
+    {
+      "id_paket": 1,
+      "nama_paket": "ruangbelajar SMA/SMK (Semester Genap + Persiapan PAS)",
+      "harga_paket": 498000,
+      "status": "Nonaktif"
+    }
+  ]
+}
+```
+
+### Pembayaran
+
+> Khusus untuk Shopeepay
+
+#### Request
+
+- **Endpoint** : GET /checkout
+- **Body Request** : -
+- **Authorization** : Bearer Token
+
+#### Response
+
+```JSON
+{
+    "message": "Pembayaran berhasil"
+}
+```
+
+### Riwayat
+
+> Khusus untuk Shopeepay
+
+#### Request
+
+- **Endpoint** : GET /riwayat
+- **Body Request** : -
+- **Authorization** : Bearer Token
+
+#### Response
+
+```JSON
+{
+  "message": "Berhasil",
+  "data": [
+    {
+      "id_pembelian": 6,
+      "nama_paket": "ruangbelajar SMA/SMK (Semester Genap + Persiapan PAS)",
+      "harga_pembelian": 498000,
+      "status": "Sudah Dibayar"
+    }
+  ]
+}
+```
+
+### Detail Riwayat
+
+> Khusus untuk Shopeepay
+
+#### Request
+
+- **Endpoint** : GET /riwayat/:id
+- **Body Request** : -
+- **Authorization** : Bearer Token
+
+#### Response
+
+```JSON
+{
+  "message": "Berhasil",
+  "data": {
+    "id_pembelian": 6,
+    "nama_paket": "ruangbelajar SMA/SMK (Semester Genap + Persiapan PAS)",
+    "harga_paket": 498000,
+    "harga_pembelian": 498000,
+    "status": "Sudah Dibayar",
+    "metode_pembayaran": "testing"
+  }
 }
 ```

@@ -11,7 +11,6 @@ require('dotenv').config()
 
 const user_table = "user"
 const transaction_table = "pembelian"
-const product_table = "paket_pembelajaran"
 const payment_table = "pembayaran"
 
 
