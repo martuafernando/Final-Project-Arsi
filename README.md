@@ -153,23 +153,22 @@
 
 #### Request
 
-- **Endpoint** : GET /paket-saya
-- **Body Request** : -
+- **Endpoint** : POST /pembelian
+- **Body Request** : id_paket, kode_diskon (opsional)
 - **Authorization** : Bearer Token
+
+```JSON
+{
+  "id_paket" : "6",
+  "kode_diskon" : "SIBERLAKU",
+}
+```
 
 #### Response
 
 ```JSON
 {
-  "message": "Berhasil",
-  "data": [
-    {
-      "id_paket": 1,
-      "nama_paket": "ruangbelajar SMA/SMK (Semester Genap + Persiapan PAS)",
-      "harga_paket": 498000,
-      "status": "Nonaktif"
-    }
-  ]
+    "message": "Pembelian berhasil"
 }
 ```
 
@@ -179,7 +178,7 @@
 
 #### Request
 
-- **Endpoint** : GET /checkout
+- **Endpoint** : POST /checkout
 - **Body Request** : -
 - **Authorization** : Bearer Token
 
