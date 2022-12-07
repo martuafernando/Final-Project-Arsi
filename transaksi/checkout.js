@@ -6,6 +6,7 @@ const Pembelian = express.Router()
 const bodyParser = require('body-parser')
 const mysql = require('mysql2')
 const jwt = require('jsonwebtoken')
+const { response } = require('express')
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 require('dotenv').config()
 
@@ -27,7 +28,7 @@ Pembelian.post('/', urlencodedParser, async function (req, res) {
     const token = jwt.verify(req.header("authorization").split(" ")[1], process.env.key)
     if(!await exists(token.user_id, user_table)) throw ({message: "Data akun tidak ada", statusCode: 400})
 
-    if(!req.body.id_pembelian || !req.body.nominal_pembayaran) throw ({message: "Masukkan id_pembelian dan nominal_pembayaran", statusCode: 400})
+    if(!req.body.id_pembelian || !req.body.nominal_pembayaran || !req.body.token) throw ({message: "Masukkan id_pembelian, nominal_pembayaran, dan token", statusCode: 400})
 
     if(!await exists(req.body.id_pembelian, transaction_table)) throw ({message: "Data pembelian tidak ditemukan", statusCode: 400})
 
@@ -38,19 +39,63 @@ Pembelian.post('/', urlencodedParser, async function (req, res) {
 
     const id_pembayaran = (await insert('total_pembayaran, metode, waktu_pembayaran', `'${req.body.nominal_pembayaran}', '${(await select('nama_lengkap', user_table, `id='${token.user_id}'`))[0].nama_lengkap}', ${new Date().getTime()/1000}`, payment_table)).insertId
 
-    await changeTransactionStatus(req.body.id_pembelian, id_pembayaran)
+    const saldoEwallet = await ewalletGetRequest('http://localhost:3001/profile/saldo', {'Authorization': `Bearer ${req.body.token}`, 'Content-Type': 'application/json'})
+    const responseEwallet = await ewalletPatchRequest('http://localhost:3001/profile/pay', {'Authorization': `Bearer ${req.body.token}`, 'Content-Type': 'application/json'}, {'jumlah': pembelian.total_pembelian})
 
+    if(responseEwallet.status != 200) throw ({message: "Token eWallet salah", statusCode: 400})
+    if(saldoEwallet.saldo < pembelian.total_pembelian) throw ({message: "Saldo Tidak mencukupi", statusCode: 400})
+
+    await changeTransactionStatus(req.body.id_pembelian, id_pembayaran)
     response.message = "Pembayaran berhasil"
 
     res.json(response)
 
   }catch(error){
-    console.log(error)
     response.message = error.message || error
     res.statusCode = error.statusCode || 500
     res.json(response)
   }
 })
+
+// Function to send Patch Request to EWallet
+async function ewalletPatchRequest(url, header, data){
+  return new Promise((resolve, reject) =>{
+    import('node-fetch')
+    .then(({default: fetch}) => 
+        fetch(url, {
+          method: "PATCH",
+          body: JSON.stringify(data),
+          headers: header,
+        }
+      )
+      .then(response => {return response})
+    )
+    .then(response => {
+      if(response.status == 200) resolve(response)
+      else resolve(response.text())
+    })
+    .catch(err => reject(err))
+  })
+}
+
+// Function to send Get Request to EWallet
+async function ewalletGetRequest(url, header){
+  return new Promise((resolve, reject) =>{
+    import('node-fetch')
+    .then(({default: fetch}) => 
+        fetch(url, {
+          method: "GET",
+          headers: header,
+        }
+      )
+      .then(response => {return response})
+    )
+    .then(response => {
+      if(response.status == 200) resolve(response.json())
+      else resolve(response.text())
+    })
+  })
+}
 
 // Function to change status of transaction
 function changeTransactionStatus(id_pembelian, id_pembayaran){

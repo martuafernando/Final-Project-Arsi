@@ -36,8 +36,6 @@ DetailRiwayat.get('/:riwayat_id', urlencodedParser, async function (req, res) {
     
     response.message = "Berhasil"
 
-    console.log(histories)
-
     response.data = {
       id_pembelian: histories[0].id,
       nama_paket : histories[0].nama,
