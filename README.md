@@ -22,6 +22,7 @@
 
 #### Request
 
+- **Content-Type** : application/x-www-form-urlencoded
 - **Endpoint** : POST /daftar
 - **Body Request** : nama_lengkap, email, password, kelas
 - **Authorization** : -
@@ -153,6 +154,7 @@
 
 #### Request
 
+- **Content-Type** : application/x-www-form-urlencoded
 - **Endpoint** : POST /pembelian
 - **Body Request** : id_paket, kode_diskon (opsional)
 - **Authorization** : Bearer Token
@@ -174,13 +176,16 @@
 
 ### Pembayaran
 
-> Khusus untuk Shopeepay
-
 #### Request
 
+- **Content-Type** : application/x-www-form-urlencoded
 - **Endpoint** : POST /checkout
-- **Body Request** : -
+- **Body Request** : id_pembelian, nominal_pembayaran, token
 - **Authorization** : Bearer Token
+
+> Token didapat dari hasil login ke Shopay
+
+> Token Authorization berbeda dengan Token request body
 
 #### Response
 
@@ -191,8 +196,6 @@
 ```
 
 ### Riwayat
-
-> Khusus untuk Shopeepay
 
 #### Request
 
@@ -217,8 +220,6 @@
 ```
 
 ### Detail Riwayat
-
-> Khusus untuk Shopeepay
 
 #### Request
 

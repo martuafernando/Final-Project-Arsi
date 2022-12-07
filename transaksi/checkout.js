@@ -6,7 +6,6 @@ const Pembelian = express.Router()
 const bodyParser = require('body-parser')
 const mysql = require('mysql2')
 const jwt = require('jsonwebtoken')
-const { response } = require('express')
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 require('dotenv').config()
 
@@ -80,7 +79,7 @@ async function ewalletPatchRequest(url, header, data){
 
 // Function to send Get Request to EWallet
 async function ewalletGetRequest(url, header){
-  return new Promise((resolve, reject) =>{
+  return new Promise((resolve) =>{
     import('node-fetch')
     .then(({default: fetch}) => 
         fetch(url, {
