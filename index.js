@@ -32,7 +32,7 @@ app.use('/riwayat', require('./transaksi/detailRiwayat'))
 
 app.use('/checkout', require('./transaksi/checkout'))
 
-app.use(cors({ credential: true, origin: 'http//localhost:3000' }));
+app.use(cors({ credential: true, origin: 'http//localhost' }));
 
 /* istanbul ignore next */
 if (!module.parent) {
