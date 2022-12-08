@@ -9,6 +9,14 @@ const converter = new showdown.Converter()
 
 const fs = require('fs')
 
+app.use((req, res, next) => {
+  res.append('Access-Control-Allow-Origin', ['*']);
+  res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.append('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
+app.use(cors({ credential: true, origin: '*' }));
 
 app.get('/', function(req, res) {
   // res.json({"message": "Hello From Root"})
@@ -32,7 +40,6 @@ app.use('/riwayat', require('./transaksi/detailRiwayat'))
 
 app.use('/checkout', require('./transaksi/checkout'))
 
-app.use(cors({ credential: true, origin: 'http//localhost' }));
 
 /* istanbul ignore next */
 if (!module.parent) {
