@@ -1,6 +1,7 @@
 'use strict'
 
 const express = require('express')
+const cors = require('cors')
 const app = module.exports = express();
 
 const showdown  = require('showdown')
@@ -30,6 +31,8 @@ app.use('/riwayat', require('./transaksi/riwayat'))
 app.use('/riwayat', require('./transaksi/detailRiwayat'))
 
 app.use('/checkout', require('./transaksi/checkout'))
+
+app.use(cors());
 
 /* istanbul ignore next */
 if (!module.parent) {
