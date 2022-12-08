@@ -30,6 +30,7 @@ app.use('/login', require('./auth/Login'))
 app.use('/daftar', require('./auth/Daftar'))
 
 app.use('/paket-pembelajaran', require('./produk/paketPembelajaran'))
+app.use('/diskon', require('./produk/diskon'))
 
 app.use('/profile', require('./account/profile'))
 app.use('/paket-saya', require('./account/paketSaya'))
