@@ -99,6 +99,32 @@
 }
 ```
 
+### Diskon
+
+#### Request
+
+- **Endpoint** : GET /diskon
+- **Body Request** : -
+- **Authorization** : -
+
+#### Response
+
+```JSON
+{
+  "message": "Berhasil",
+  "data": [
+    {
+        "kode_diskon": "SIBERLAKU",
+        "tanggal_berakhir": "30/6/2023"
+    },
+    {
+        "kode_diskon": "SINONBERLAKU",
+        "tanggal_berakhir": "30/6/2021"
+    }
+  ]
+}
+```
+
 ### Profile
 
 #### Request
