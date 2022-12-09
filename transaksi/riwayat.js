@@ -35,6 +35,7 @@ Riwayat.get('/', urlencodedParser, async function (req, res) {
       response.data.push({
         id_pembelian: history.id,
         nama_paket : history.nama,
+        kelas: history.kelas,
         harga_pembelian : history.total_pembelian,
         status : history.status ? "Sudah Dibayar" : "Belum Dibayar"
       })
@@ -55,7 +56,7 @@ function getDataPaket(user_id) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(config)
 
-    const sql = `SELECT nama, total_pembelian, status, pembelian.id AS id FROM ${transaction_table} INNER JOIN ${product_table} ON ${transaction_table}.id_paket = ${product_table}.id WHERE ${transaction_table}.id_user='${user_id}'`
+    const sql = `SELECT nama, kelas, total_pembelian, status, pembelian.id AS id FROM ${transaction_table} INNER JOIN ${product_table} ON ${transaction_table}.id_paket = ${product_table}.id WHERE ${transaction_table}.id_user='${user_id}'`
 
     connection.query(sql, (err, result) => {
       if(err) return reject(err)
