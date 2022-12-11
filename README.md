@@ -114,12 +114,14 @@
   "message": "Berhasil",
   "data": [
     {
-        "kode_diskon": "SIBERLAKU",
-        "tanggal_berakhir": "30/6/2023"
+      "kode_diskon": "SIBERLAKU",
+      "harga_diskon": 100000,
+      "tanggal_berakhir": "30/6/2023"
     },
     {
-        "kode_diskon": "SINONBERLAKU",
-        "tanggal_berakhir": "30/6/2021"
+      "kode_diskon": "SINONBERLAKU",
+      "harga_diskon": 200000,
+      "tanggal_berakhir": "30/6/2021"
     }
   ]
 }
@@ -196,7 +198,10 @@
 
 ```JSON
 {
-    "message": "Pembelian berhasil"
+  "message": "Pembelian berhasil",
+  "data": {
+    "id_pembelian": 16
+  }
 }
 ```
 
