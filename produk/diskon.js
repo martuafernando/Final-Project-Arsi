@@ -29,6 +29,7 @@ Diskon.get('/', urlencodedParser, async function (req, res) {
       const d = new Date(diskon.waktu_berakhir*1000)
       response.data.push({
         kode_diskon: diskon.kode_diskon,
+        harga_diskon: diskon.diskon,
         tanggal_berakhir: `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`
       })
     }

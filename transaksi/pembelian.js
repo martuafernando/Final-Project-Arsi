@@ -33,6 +33,8 @@ Pembelian.post('/', urlencodedParser, async function (req, res) {
     const paket_pembelajaran =  (await select("id, harga", product_table, `id='${req.body.id_paket}'`))
     if(!(paket_pembelajaran.length > 0)) throw ({message: "Paket pembelajaran tidak ada", statusCode: 400}) 
 
+    let id_pembelian
+
     if(req.body.kode_diskon){
       const diskon =  (await select("id, diskon, waktu_berakhir", discount_table, `kode_diskon='${req.body.kode_diskon}'`))
       
@@ -41,12 +43,15 @@ Pembelian.post('/', urlencodedParser, async function (req, res) {
       
       const total_pembelian = (paket_pembelajaran[0].harga - diskon[0].diskon) < 0 ? 0 : paket_pembelajaran[0].harga - diskon[0].diskon
       
-      insert('id_user, id_paket, status, total_pembelian, id_diskon, waktu_pembelian', `'${token.user_id}', '${req.body.id_paket}', '0', '${total_pembelian}', '${diskon[0].id}', ${new Date().getTime()/1000}`, transaction_table)
+      id_pembelian = (await insert('id_user, id_paket, status, total_pembelian, id_diskon, waktu_pembelian', `'${token.user_id}', '${req.body.id_paket}', '0', '${total_pembelian}', '${diskon[0].id}', ${new Date().getTime()/1000}`, transaction_table)).insertId
     }else{
-      insert('id_user, id_paket, status, total_pembelian, waktu_pembelian', `'${token.user_id}', '${req.body.id_paket}', '0', '${paket_pembelajaran[0].harga}', ${new Date().getTime()/1000}`, transaction_table)
+      id_pembelian = (await insert('id_user, id_paket, status, total_pembelian, waktu_pembelian', `'${token.user_id}', '${req.body.id_paket}', '0', '${paket_pembelajaran[0].harga}', ${new Date().getTime()/1000}`, transaction_table)).insertId
     }
 
     response.message = "Pembelian berhasil"
+    response.data = {
+      id_pembelian: id_pembelian
+    }
 
     res.json(response)
 
